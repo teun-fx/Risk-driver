@@ -1,0 +1,62 @@
+export const equityCurveData = [
+  { trade: 1, equity: 22000 },
+  { trade: 2, equity: 22180 },
+  { trade: 3, equity: 22050 },
+  { trade: 4, equity: 22340 },
+  { trade: 5, equity: 22600 },
+  { trade: 6, equity: 22450 },
+  { trade: 7, equity: 22820 },
+  { trade: 8, equity: 23100 },
+  { trade: 9, equity: 22950 },
+  { trade: 10, equity: 23200 },
+  { trade: 11, equity: 23450 },
+  { trade: 12, equity: 23300 },
+  { trade: 13, equity: 23600 },
+  { trade: 14, equity: 23850 },
+  { trade: 15, equity: 23700 },
+  { trade: 16, equity: 24050 },
+  { trade: 17, equity: 23900 },
+  { trade: 18, equity: 24200 },
+  { trade: 19, equity: 24080 },
+  { trade: 20, equity: 24350 },
+  { trade: 21, equity: 24180 },
+  { trade: 22, equity: 24500 },
+  { trade: 23, equity: 24300 },
+  { trade: 24, equity: 24620 },
+  { trade: 25, equity: 24450 },
+  { trade: 26, equity: 24700 },
+  { trade: 27, equity: 24550 },
+  { trade: 28, equity: 24800 },
+  { trade: 29, equity: 24620 },
+  { trade: 30, equity: 24340 },
+];
+
+export const recentTrades = [
+  { datum: '11 jun', setup: 'Breakout long', rr: '1:2.5', resultaat: 'Win', r: '+2.5R' },
+  { datum: '11 jun', setup: 'Pullback short', rr: '1:1.8', resultaat: 'Loss', r: '-1R' },
+  { datum: '10 jun', setup: 'Breakout long', rr: '1:2.2', resultaat: 'Win', r: '+2.2R' },
+  { datum: '10 jun', setup: 'Range fade', rr: '1:1.5', resultaat: 'Win', r: '+1.5R' },
+  { datum: '09 jun', setup: 'Pullback long', rr: '1:3.0', resultaat: 'Win', r: '+3.0R' },
+];
+
+export const allTrades = [
+  { datum: '11 jun', setup: 'Breakout long', instrument: 'ES', rr: '1:2.5', resultaat: 'Win', r: '+2.5R', kosten: '€4.20' },
+  { datum: '11 jun', setup: 'Pullback short', instrument: 'NQ', rr: '1:1.8', resultaat: 'Loss', r: '-1R', kosten: '€3.80' },
+  { datum: '10 jun', setup: 'Breakout long', instrument: 'ES', rr: '1:2.2', resultaat: 'Win', r: '+2.2R', kosten: '€4.20' },
+  { datum: '10 jun', setup: 'Range fade', instrument: 'RTY', rr: '1:1.5', resultaat: 'Win', r: '+1.5R', kosten: '€3.60' },
+  { datum: '09 jun', setup: 'Pullback long', instrument: 'ES', rr: '1:3.0', resultaat: 'Win', r: '+3.0R', kosten: '€4.20' },
+  { datum: '09 jun', setup: 'Momentum short', instrument: 'NQ', rr: '1:2.0', resultaat: 'Loss', r: '-1R', kosten: '€3.80' },
+  { datum: '06 jun', setup: 'Breakout long', instrument: 'ES', rr: '1:1.8', resultaat: 'Win', r: '+1.8R', kosten: '€4.20' },
+  { datum: '06 jun', setup: 'Pullback short', instrument: 'NQ', rr: '1:2.5', resultaat: 'Win', r: '+2.5R', kosten: '€3.80' },
+  { datum: '05 jun', setup: 'Range fade', instrument: 'RTY', rr: '1:1.5', resultaat: 'Loss', r: '-1R', kosten: '€3.60' },
+  { datum: '05 jun', setup: 'Breakout long', instrument: 'ES', rr: '1:2.0', resultaat: 'Win', r: '+2.0R', kosten: '€4.20' },
+];
+
+export const monthlyStats = [
+  { maand: 'Jan', winrate: 58, gemRR: 1.8, expectancy: 0.34, trades: 22 },
+  { maand: 'Feb', winrate: 62, gemRR: 2.0, expectancy: 0.44, trades: 18 },
+  { maand: 'Mar', winrate: 60, gemRR: 1.9, expectancy: 0.40, trades: 25 },
+  { maand: 'Apr', winrate: 65, gemRR: 2.2, expectancy: 0.51, trades: 20 },
+  { maand: 'May', winrate: 63, gemRR: 2.1, expectancy: 0.47, trades: 19 },
+  { maand: 'Jun', winrate: 64, gemRR: 2.1, expectancy: 0.48, trades: 10 },
+];

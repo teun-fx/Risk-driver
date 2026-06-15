@@ -1,0 +1,6 @@
+Date,Close Date,Instrument,Direction,Lots,Open Price,Close Price,Stop Loss,Take Profit,Profit (€/$),Commission,Swap,Setup,Notes
+2024-01-15,2024-01-15,XAUUSD,Buy,0.10,2012.50,2025.80,2005.00,2030.00,133.00,-1.20,0.00,Breakout,Strong momentum
+2024-01-16,2024-01-16,EURUSD,Sell,0.20,1.09850,1.09600,1.10100,1.09400,-50.00,-0.80,0.00,Reversal,News spike fade
+2024-01-17,2024-01-17,NAS100,Buy,0.05,16850.00,16920.00,16780.00,16950.00,350.00,-2.50,0.00,Trend follow,
+2024-01-18,2024-01-18,GBPUSD,Sell,0.10,1.27200,1.27500,1.27600,1.26800,-300.00,-1.00,0.00,Breakout,Stop hunted
+2024-01-19,2024-01-19,XAUUSD,Buy,0.15,2018.00,2031.50,2010.00,2035.00,202.50,-1.80,0.00,Retest,Clean setup
