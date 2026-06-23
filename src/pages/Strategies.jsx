@@ -4,11 +4,11 @@ import PropFirmAnalysis from './strategies/PropFirmAnalysis.jsx';
 
 // ─── design tokens ────────────────────────────────────────────────────────────
 const C = {
-  bg: '#F5F5F7', card: '#FFFFFF', border: '#D2D2D7', shadow: '0 2px 8px rgba(0,0,0,0.06)',
+  bg: '#F2F2F7', card: '#FFFFFF', border: '#E5E5EA', shadow: '0 1px 3px rgba(0,0,0,0.07)',
   text: '#1D1D1F', textSec: '#6E6E73', textTer: '#AEAEB2',
   accent: '#A1D533', accentText: '#1D1D1F',
-  red: '#FF3B30', green: '#34C759', divider: '#F0F0F0',
-  input: '#FAFAFA', inputBorder: '#D2D2D7',
+  red: '#D63A30', green: '#28B548', divider: '#E5E5EA',
+  input: '#F2F2F7', inputBorder: '#E5E5EA',
 };
 
 const SOURCES = [
@@ -481,11 +481,8 @@ export default function StrategiesPage({ strategies, setStrategies }) {
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
 
         {/* Right header */}
-        <div style={{ padding: '28px 28px 20px', borderBottom: `1px solid ${C.border}`, background: C.card }}>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', marginBottom: analyses.length > 0 ? 16 : 0 }}>
-            <Btn onClick={() => setShowAddAnalysis(true)}>+ New analysis</Btn>
-          </div>
-          {analyses.length > 0 && (
+        {analyses.length > 0 && (
+          <div style={{ padding: '20px 28px', borderBottom: `1px solid ${C.border}`, background: C.card }}>
             <div style={{ display: 'flex', gap: 10, overflowX: 'auto', paddingBottom: 2, flexWrap: 'wrap' }}>
               {analyses.map(a => (
                 <AnalysisCard key={a.id} analysis={a} isSelected={selectedAnalysisId === a.id}
@@ -493,19 +490,18 @@ export default function StrategiesPage({ strategies, setStrategies }) {
                   onDelete={() => { setAnalyses(prev => prev.filter(x => x.id !== a.id)); if (selectedAnalysisId === a.id) setSelectedAnalysisId(null); }} />
               ))}
             </div>
-          )}
-        </div>
+          </div>
+        )}
 
         {/* Right content */}
         <div style={{ flex: 1, overflowY: 'auto', padding: '24px 28px' }}>
           {!selectedAnalysis ? (
             <div style={{ textAlign: 'center', padding: '60px 40px' }}>
               <div style={{ fontSize: 36, marginBottom: 14 }}>📊</div>
-              <div style={{ fontSize: 18, fontWeight: 600, color: C.text, marginBottom: 8 }}>No analysis selected</div>
+              <div style={{ fontSize: 18, fontWeight: 600, color: C.text, marginBottom: 8 }}>No strategy found</div>
               <div style={{ fontSize: 13, color: C.textSec, maxWidth: 340, margin: '0 auto 24px', lineHeight: 1.6 }}>
-                Click "+ New analysis" to create a prop firm challenge simulation. Link it to a strategy to run the model.
+                Add your strategy to get started.
               </div>
-              <Btn onClick={() => setShowAddAnalysis(true)}>+ New analysis</Btn>
             </div>
           ) : (
             <PropFirmAnalysis analysis={selectedAnalysis} strategy={analysisStrategy} />

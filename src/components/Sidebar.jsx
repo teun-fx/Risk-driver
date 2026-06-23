@@ -1,18 +1,15 @@
-import { useTheme } from '../ThemeContext';
+import { DARK as t } from '../theme';
 
 const navItems = [
-  { id: 'dashboard',  label: 'Dashboard' },
-  { id: 'propfirm',   label: 'Prop Firm Route' },
-  { id: 'insights',   label: 'Insights' },
-  { id: 'analytics',  label: 'Analytics' },
-  { id: 'strategies', label: 'Strategies' },
-  { id: 'kosten',     label: 'Costs' },
-  { id: 'ai-advisor', label: 'AI Advisor' },
-  { id: 'tools',      label: 'Tools' },
+  { id: 'dashboard',   label: 'Dashboard' },
+  { id: 'strategies',  label: 'Strategies' },
+  { id: 'accounts',    label: 'Accounts' },
+  { id: 'statistics',  label: 'Statistics' },
+  { id: 'costs',       label: 'Costs' },
+  { id: 'ai-advisor',  label: 'AI Advisor' },
 ];
 
 export default function Sidebar({ active, onNav }) {
-  const t = useTheme();
   return (
     <aside style={{
       width: 220, minHeight: '100vh',
@@ -22,7 +19,7 @@ export default function Sidebar({ active, onNav }) {
     }}>
       <div style={{ padding: '0 24px 32px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <div style={{ width: 28, height: 28, borderRadius: 8, background: '#A1D533', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ width: 28, height: 28, borderRadius: 8, background: t.brand, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <span style={{ fontSize: 14, fontWeight: 700, color: '#1D1D1F' }}>R</span>
           </div>
           <span style={{ fontSize: 15, fontWeight: 600, color: t.text, letterSpacing: '-0.3px' }}>Risk Driver</span>
@@ -34,7 +31,7 @@ export default function Sidebar({ active, onNav }) {
           const isActive = active === item.id;
           return (
             <button key={item.id} onClick={() => onNav(item.id)} style={{
-              display: 'flex', alignItems: 'center', gap: 10,
+              display: 'flex', alignItems: 'center',
               width: '100%', padding: '10px 20px', margin: '1px 0',
               border: 'none', borderRadius: 0,
               background: isActive ? t.navActive : 'transparent',
@@ -45,8 +42,8 @@ export default function Sidebar({ active, onNav }) {
             }}>
               {isActive && (
                 <div style={{
-                  position: 'absolute', left: 0, top: '20%', height: '60%', width: 3,
-                  borderRadius: '0 2px 2px 0', background: '#A1D533',
+                  position: 'absolute', left: 0, top: '15%', height: '70%', width: 3,
+                  borderRadius: '0 2px 2px 0', background: t.brand,
                 }} />
               )}
               {item.label}
