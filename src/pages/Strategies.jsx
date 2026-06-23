@@ -11,12 +11,49 @@ const C = {
   input: '#F2F2F7', inputBorder: '#E5E5EA',
 };
 
+const SOURCE_ICONS = {
+  csv: (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+      <polyline points="14,2 14,8 20,8" />
+      <line x1="8" y1="13" x2="16" y2="13" />
+      <line x1="8" y1="17" x2="16" y2="17" />
+    </svg>
+  ),
+  mt4mt5: (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="2" y="3" width="20" height="14" rx="2" />
+      <path d="M8 21h8M12 17v4" />
+      <polyline points="6,10 9,7 12,10 15,7 18,10" />
+    </svg>
+  ),
+  ctrader: (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <polyline points="3,17 9,11 13,14 21,6" />
+      <polyline points="15,6 21,6 21,12" />
+    </svg>
+  ),
+  tradelocker: (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <rect x="5" y="11" width="14" height="10" rx="2" />
+      <path d="M8 11V7a4 4 0 018 0v4" />
+      <circle cx="12" cy="16" r="1" />
+    </svg>
+  ),
+  manual: (
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
+      <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" />
+    </svg>
+  ),
+};
+
 const SOURCES = [
-  { id: 'csv',         label: 'CSV upload',   icon: '📄' },
-  { id: 'mt4mt5',      label: 'MT4/MT5',      icon: '🖥' },
-  { id: 'ctrader',     label: 'cTrader',      icon: '📊' },
-  { id: 'tradelocker', label: 'TradeLocker',  icon: '🔒' },
-  { id: 'manual',      label: 'Manual entry', icon: '✏️' },
+  { id: 'csv',         label: 'CSV upload'   },
+  { id: 'mt4mt5',      label: 'MT4/MT5'      },
+  { id: 'ctrader',     label: 'cTrader'      },
+  { id: 'tradelocker', label: 'TradeLocker'  },
+  { id: 'manual',      label: 'Manual entry' },
 ];
 const SOURCE_LABELS = Object.fromEntries(SOURCES.map(s => [s.id, s.label]));
 
@@ -172,9 +209,9 @@ function AddStrategyModal({ onSave, onClose }) {
             <button key={src.id} onClick={() => { setSource(src.id); setStep(2); }} style={{
               display: 'flex', alignItems: 'center', gap: 12, padding: '14px 16px',
               border: `1px solid ${C.border}`, borderRadius: 12, background: C.card,
-              cursor: 'pointer', fontFamily: 'inherit', textAlign: 'left',
+              cursor: 'pointer', fontFamily: 'inherit', textAlign: 'left', color: C.textSec,
             }}>
-              <span style={{ fontSize: 20 }}>{src.icon}</span>
+              <span style={{ flexShrink: 0 }}>{SOURCE_ICONS[src.id]}</span>
               <div>
                 <div style={{ fontSize: 13, fontWeight: 500, color: C.text }}>{src.label}</div>
                 <div style={{ fontSize: 11, color: C.textSec, marginTop: 1 }}>
@@ -214,7 +251,10 @@ function AddStrategyModal({ onSave, onClose }) {
                 </div>
                ) : (
                 <div>
-                  <div style={{ fontSize: 28, marginBottom: 8 }}>📄</div>
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke={C.textTer} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginBottom: 8, display: 'block', margin: '0 auto 8px' }}>
+                    <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+                    <polyline points="14,2 14,8 20,8" />
+                  </svg>
                   <div style={{ fontSize: 13, color: C.textSec }}>Drop CSV here or <span style={{ color: C.accent, fontWeight: 600 }}>browse</span></div>
                   <div style={{ fontSize: 11, color: C.textTer, marginTop: 4 }}>Supports RiskDriver CSV, MT4/MT5, and generic formats</div>
                 </div>
@@ -497,7 +537,10 @@ export default function StrategiesPage({ strategies, setStrategies }) {
         <div style={{ flex: 1, overflowY: 'auto', padding: '24px 28px' }}>
           {!selectedAnalysis ? (
             <div style={{ textAlign: 'center', padding: '60px 40px' }}>
-              <div style={{ fontSize: 36, marginBottom: 14 }}>📊</div>
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke={C.textTer} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" style={{ marginBottom: 14, display: 'block', margin: '0 auto 14px' }}>
+                  <polyline points="3,17 9,11 13,14 21,6" />
+                  <polyline points="15,6 21,6 21,12" />
+                </svg>
               <div style={{ fontSize: 18, fontWeight: 600, color: C.text, marginBottom: 8 }}>No strategy found</div>
               <div style={{ fontSize: 13, color: C.textSec, maxWidth: 340, margin: '0 auto 24px', lineHeight: 1.6 }}>
                 Add your strategy to get started.

@@ -697,14 +697,14 @@ function AddAccountModal({ onClose, onAdd }) {
 
 // ─── Account card ─────────────────────────────────────────────────────────────
 
-function AccountCard({ account, selected, onSelect }) {
+function AccountCard({ account, selected, onSelect, onDelete }) {
   return (
     <div
       onClick={() => onSelect(account.id)}
       style={{
         background: t.card, borderRadius: 16, padding: '16px 18px', cursor: 'pointer',
         border: `1.5px solid ${selected ? t.accent : t.cardBorder}`,
-        boxShadow: selected ? '0 0 0 3px rgba(48,209,88,0.12)' : 'none',
+        boxShadow: selected ? '0 0 0 3px rgba(29,185,84,0.10)' : 'none',
         transition: 'all 0.15s',
       }}
     >
@@ -713,9 +713,21 @@ function AccountCard({ account, selected, onSelect }) {
           <TypeIcon id={account.type} size={16} color={t.textSec} />
           <div style={{ fontSize: 14, fontWeight: 600, color: t.text }}>{account.brokerName}</div>
         </div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
           <span style={{ width: 7, height: 7, borderRadius: '50%', background: account.status === 'active' ? t.accent : t.red, display: 'inline-block' }} />
           <span style={{ fontSize: 11, color: t.textSec }}>{account.status === 'active' ? 'Active' : 'Inactive'}</span>
+          <button
+            onClick={e => { e.stopPropagation(); onDelete(account.id); }}
+            style={{ background: 'none', border: 'none', cursor: 'pointer', color: t.textTer, padding: '0 2px', lineHeight: 1, marginLeft: 2 }}
+            title="Delete account"
+          >
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+              <polyline points="3,6 5,6 21,6" />
+              <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6" />
+              <path d="M10 11v6M14 11v6" />
+              <path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2" />
+            </svg>
+          </button>
         </div>
       </div>
       <div style={{ fontSize: 11, color: t.textSec, marginBottom: 6, marginLeft: 24 }}>{account.accountType}</div>
@@ -743,18 +755,73 @@ function SectionTitle({ children }) {
   );
 }
 
-function AccountDetail({ account }) {
+function EditAccountModal({ account, onSave, onClose }) {
+  const [name, setName]             = useState(account.brokerName || '');
+  const [accountSize, setAccountSize] = useState(String(account.accountSize || ''));
+  const [currency, setCurrency]     = useState(account.currency || 'USD');
+  const [startDate, setStartDate]   = useState(account.startDate || '');
+
+  function handleSave() {
+    onSave({
+      ...account,
+      brokerName: name.trim() || account.brokerName,
+      accountSize: parseFloat(accountSize) || account.accountSize,
+      startingBalance: parseFloat(accountSize) || account.startingBalance,
+      currency: currency.trim() || 'USD',
+      startDate,
+    });
+    onClose();
+  }
+
+  return (
+    <div
+      style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.35)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 24 }}
+      onClick={e => e.target === e.currentTarget && onClose()}
+    >
+      <div style={{ background: t.card, borderRadius: 20, width: 440, boxShadow: '0 20px 60px rgba(0,0,0,0.2)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '20px 24px', borderBottom: `1px solid ${t.border}` }}>
+          <div style={{ fontSize: 16, fontWeight: 600, color: t.text }}>Edit Account</div>
+          <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 20, color: t.textTer, padding: '0 4px', lineHeight: 1 }}>x</button>
+        </div>
+        <div style={{ padding: '20px 24px', display: 'flex', flexDirection: 'column', gap: 14 }}>
+          <Input label="Account name" value={name} onChange={setName} placeholder="Account name" />
+          <Input label="Account size ($)" type="number" value={accountSize} onChange={setAccountSize} placeholder="10000" />
+          <Input label="Currency" value={currency} onChange={setCurrency} placeholder="USD" />
+          <Input label="Start date" type="date" value={startDate} onChange={setStartDate} />
+        </div>
+        <div style={{ padding: '16px 24px', borderTop: `1px solid ${t.border}`, display: 'flex', gap: 10, justifyContent: 'flex-end' }}>
+          <button onClick={onClose} style={{ padding: '9px 18px', border: `1px solid ${t.border}`, borderRadius: 10, background: 'transparent', color: t.textSec, fontFamily: 'inherit', fontSize: 13, cursor: 'pointer' }}>Cancel</button>
+          <button onClick={handleSave} style={{ padding: '9px 18px', border: 'none', borderRadius: 10, background: t.accent, color: '#000', fontFamily: 'inherit', fontSize: 13, fontWeight: 600, cursor: 'pointer' }}>Save</button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function AccountDetail({ account, onEdit, onDelete }) {
   const group = account.group || accountGroup(account.type);
   const isCfd     = group === 'cfd';
   const isFutures = group === 'futures';
 
   return (
     <div style={{ background: t.card, borderRadius: 18, padding: '24px 28px' }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20 }}>
-        <TypeIcon id={account.type} size={22} color={t.textSec} />
-        <div>
-          <div style={{ fontSize: 20, fontWeight: 600, color: t.text }}>{account.brokerName}</div>
-          <div style={{ fontSize: 13, color: t.textSec, marginTop: 2 }}>{account.accountType}</div>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <TypeIcon id={account.type} size={22} color={t.textSec} />
+          <div>
+            <div style={{ fontSize: 20, fontWeight: 600, color: t.text }}>{account.brokerName}</div>
+            <div style={{ fontSize: 13, color: t.textSec, marginTop: 2 }}>{account.accountType}</div>
+          </div>
+        </div>
+        <div style={{ display: 'flex', gap: 8 }}>
+          <button onClick={onEdit} style={{
+            padding: '7px 14px', border: `1px solid ${t.border}`, borderRadius: 10,
+            background: 'transparent', color: t.textSec, fontFamily: 'inherit', fontSize: 12, cursor: 'pointer',
+          }}>Edit</button>
+          <button onClick={onDelete} style={{
+            padding: '7px 14px', border: `1px solid ${t.red}`, borderRadius: 10,
+            background: 'transparent', color: t.red, fontFamily: 'inherit', fontSize: 12, cursor: 'pointer',
+          }}>Delete</button>
         </div>
       </div>
 
@@ -812,14 +879,25 @@ function AccountDetail({ account }) {
 // ─── Main page ────────────────────────────────────────────────────────────────
 
 export default function Accounts({ accounts, setAccounts }) {
-  const [selected, setSelected] = useState(accounts[0]?.id ?? null);
+  const [selected, setSelected]   = useState(accounts[0]?.id ?? null);
   const [showModal, setShowModal] = useState(false);
+  const [editAccount, setEditAccount] = useState(null);
 
   const selectedAccount = accounts.find(a => a.id === selected);
 
   function addAccount(data) {
     setAccounts(prev => [...prev, data]);
     setSelected(data.id);
+  }
+
+  function handleDelete(id) {
+    if (!window.confirm('Delete this account?')) return;
+    setAccounts(prev => prev.filter(a => a.id !== id));
+    if (selected === id) setSelected(accounts.find(a => a.id !== id)?.id ?? null);
+  }
+
+  function handleEdit(updatedAccount) {
+    setAccounts(prev => prev.map(a => a.id === updatedAccount.id ? updatedAccount : a));
   }
 
   return (
@@ -836,7 +914,7 @@ export default function Accounts({ accounts, setAccounts }) {
       <div style={{ display: 'grid', gridTemplateColumns: '280px 1fr', gap: 16 }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
           {accounts.map(acc => (
-            <AccountCard key={acc.id} account={acc} selected={selected === acc.id} onSelect={setSelected} />
+            <AccountCard key={acc.id} account={acc} selected={selected === acc.id} onSelect={setSelected} onDelete={handleDelete} />
           ))}
           <button
             onClick={() => setShowModal(true)}
@@ -851,7 +929,11 @@ export default function Accounts({ accounts, setAccounts }) {
         </div>
 
         {selectedAccount ? (
-          <AccountDetail account={selectedAccount} />
+          <AccountDetail
+            account={selectedAccount}
+            onEdit={() => setEditAccount(selectedAccount)}
+            onDelete={() => handleDelete(selectedAccount.id)}
+          />
         ) : (
           <div style={{ background: t.card, borderRadius: 18, padding: '60px', textAlign: 'center' }}>
             <div style={{ fontSize: 14, color: t.textTer }}>Select an account to view details</div>
@@ -860,6 +942,13 @@ export default function Accounts({ accounts, setAccounts }) {
       </div>
 
       {showModal && <AddAccountModal onClose={() => setShowModal(false)} onAdd={addAccount} />}
+      {editAccount && (
+        <EditAccountModal
+          account={editAccount}
+          onSave={handleEdit}
+          onClose={() => setEditAccount(null)}
+        />
+      )}
     </div>
   );
 }

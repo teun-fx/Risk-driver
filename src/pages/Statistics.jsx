@@ -55,8 +55,8 @@ const METRICS = [
 ];
 
 const chartTooltipStyle = {
-  contentStyle: { background: '#FFFFFF', border: '1px solid #E5E5EA', borderRadius: 12, color: '#1D1D1F', boxShadow: '0 1px 3px rgba(0,0,0,0.07)' },
-  labelStyle: { color: '#6E6E73', fontSize: 12 },
+  contentStyle: { background: t.card, border: `1px solid ${t.border}`, borderRadius: 12, color: t.text, boxShadow: t.cardShadow },
+  labelStyle: { color: t.textSec, fontSize: 12 },
 };
 
 export default function Statistics({ strategies = [] }) {
@@ -100,15 +100,15 @@ export default function Statistics({ strategies = [] }) {
           <AreaChart data={EQUITY} margin={{ top: 4, right: 4, left: 0, bottom: 0 }}>
             <defs>
               <linearGradient id="greenGrad2" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#30D158" stopOpacity={0.3} />
-                <stop offset="95%" stopColor="#30D158" stopOpacity={0} />
+                <stop offset="5%" stopColor={t.accent} stopOpacity={0.3} />
+                <stop offset="95%" stopColor={t.accent} stopOpacity={0} />
               </linearGradient>
             </defs>
-            <CartesianGrid strokeDasharray="3 3" stroke="#2C2C2E" vertical={false} />
-            <XAxis dataKey="day" stroke="#48484A" tick={{ fill: '#98989D', fontSize: 11 }} tickLine={false} />
-            <YAxis stroke="#48484A" tick={{ fill: '#98989D', fontSize: 11 }} />
+            <CartesianGrid strokeDasharray="3 3" stroke={t.border} vertical={false} />
+            <XAxis dataKey="day" stroke={t.border} tick={{ fill: t.textTer, fontSize: 11 }} tickLine={false} />
+            <YAxis stroke={t.border} tick={{ fill: t.textTer, fontSize: 11 }} />
             <Tooltip {...chartTooltipStyle} formatter={v => [`$${v.toLocaleString()}`, 'Equity']} />
-            <Area type="monotone" dataKey="value" stroke="#30D158" strokeWidth={2} fill="url(#greenGrad2)" dot={false} />
+            <Area type="monotone" dataKey="value" stroke={t.accent} strokeWidth={2} fill="url(#greenGrad2)" dot={false} />
           </AreaChart>
         </ResponsiveContainer>
       </div>
@@ -120,15 +120,15 @@ export default function Statistics({ strategies = [] }) {
           <AreaChart data={UNDERWATER} margin={{ top: 4, right: 4, left: 0, bottom: 0 }}>
             <defs>
               <linearGradient id="redGrad" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#FF453A" stopOpacity={0.4} />
-                <stop offset="95%" stopColor="#FF453A" stopOpacity={0} />
+                <stop offset="5%" stopColor={t.red} stopOpacity={0.4} />
+                <stop offset="95%" stopColor={t.red} stopOpacity={0} />
               </linearGradient>
             </defs>
-            <CartesianGrid strokeDasharray="3 3" stroke="#2C2C2E" vertical={false} />
-            <XAxis dataKey="day" stroke="#48484A" tick={{ fill: '#98989D', fontSize: 11 }} tickLine={false} />
-            <YAxis stroke="#48484A" tick={{ fill: '#98989D', fontSize: 11 }} tickFormatter={v => `${v.toFixed(1)}%`} />
+            <CartesianGrid strokeDasharray="3 3" stroke={t.border} vertical={false} />
+            <XAxis dataKey="day" stroke={t.border} tick={{ fill: t.textTer, fontSize: 11 }} tickLine={false} />
+            <YAxis stroke={t.border} tick={{ fill: t.textTer, fontSize: 11 }} tickFormatter={v => `${v.toFixed(1)}%`} />
             <Tooltip {...chartTooltipStyle} formatter={v => [`${v.toFixed(2)}%`, 'Drawdown']} />
-            <Area type="monotone" dataKey="value" stroke="#FF453A" strokeWidth={2} fill="url(#redGrad)" dot={false} />
+            <Area type="monotone" dataKey="value" stroke={t.red} strokeWidth={2} fill="url(#redGrad)" dot={false} />
           </AreaChart>
         </ResponsiveContainer>
       </div>
@@ -157,7 +157,7 @@ export default function Statistics({ strategies = [] }) {
                         {v != null ? (
                           <div style={{
                             padding: '5px 4px', borderRadius: 8, fontSize: 12, fontWeight: 500,
-                            background: v >= 0 ? 'rgba(48,209,88,0.2)' : 'rgba(255,69,58,0.2)',
+                            background: v >= 0 ? 'rgba(29,185,84,0.15)' : 'rgba(229,55,61,0.15)',
                             color: v >= 0 ? t.accent : t.red,
                           }}>
                             {v >= 0 ? '+' : ''}{v.toFixed(1)}%
@@ -182,13 +182,13 @@ export default function Statistics({ strategies = [] }) {
           <div style={{ fontSize: 14, fontWeight: 500, color: t.text, marginBottom: 16 }}>Daily Returns Distribution</div>
           <ResponsiveContainer width="100%" height={180}>
             <BarChart data={HISTOGRAM} margin={{ top: 4, right: 4, left: -20, bottom: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#2C2C2E" vertical={false} />
-              <XAxis dataKey="bin" stroke="#48484A" tick={{ fill: '#98989D', fontSize: 11 }} tickLine={false} />
-              <YAxis stroke="#48484A" tick={{ fill: '#98989D', fontSize: 11 }} />
+              <CartesianGrid strokeDasharray="3 3" stroke={t.border} vertical={false} />
+              <XAxis dataKey="bin" stroke={t.border} tick={{ fill: t.textTer, fontSize: 11 }} tickLine={false} />
+              <YAxis stroke={t.border} tick={{ fill: t.textTer, fontSize: 11 }} />
               <Tooltip {...chartTooltipStyle} />
               <Bar dataKey="count" radius={[4, 4, 0, 0]}>
                 {HISTOGRAM.map((entry, i) => (
-                  <Cell key={i} fill={entry.bin.startsWith('-') ? '#FF453A' : entry.bin === '0' ? '#98989D' : '#30D158'} />
+                  <Cell key={i} fill={entry.bin.startsWith('-') ? t.red : entry.bin === '0' ? t.textTer : t.accent} />
                 ))}
               </Bar>
             </BarChart>
@@ -200,11 +200,11 @@ export default function Statistics({ strategies = [] }) {
           <div style={{ fontSize: 14, fontWeight: 500, color: t.text, marginBottom: 16 }}>Yearly Returns</div>
           <ResponsiveContainer width="100%" height={180}>
             <BarChart data={YEARLY} margin={{ top: 4, right: 4, left: -20, bottom: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#2C2C2E" vertical={false} />
-              <XAxis dataKey="year" stroke="#48484A" tick={{ fill: '#98989D', fontSize: 11 }} tickLine={false} />
-              <YAxis stroke="#48484A" tick={{ fill: '#98989D', fontSize: 11 }} tickFormatter={v => `${v}%`} />
+              <CartesianGrid strokeDasharray="3 3" stroke={t.border} vertical={false} />
+              <XAxis dataKey="year" stroke={t.border} tick={{ fill: t.textTer, fontSize: 11 }} tickLine={false} />
+              <YAxis stroke={t.border} tick={{ fill: t.textTer, fontSize: 11 }} tickFormatter={v => `${v}%`} />
               <Tooltip {...chartTooltipStyle} formatter={v => [`${v}%`, 'Return']} />
-              <Bar dataKey="ret" fill="#30D158" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="ret" fill={t.accent} radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>

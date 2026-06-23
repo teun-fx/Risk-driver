@@ -5,7 +5,8 @@ import Strategies from './pages/Strategies';
 import Accounts from './pages/Accounts';
 import Statistics from './pages/Statistics';
 import Costs from './pages/Costs';
-import AIAdvisor from './pages/AIAdvisor';
+import Roadmap from './pages/Roadmap';
+import Insights from './pages/Insights';
 import { ThemeContext } from './ThemeContext';
 import { DARK } from './theme';
 
@@ -165,9 +166,9 @@ export default function App() {
       case 'dashboard':   return <Dashboard strategies={strategies} accounts={accounts} onNav={setActivePage} />;
       case 'strategies':  return <Strategies strategies={strategies} setStrategies={setStrategies} />;
       case 'accounts':    return <Accounts accounts={accounts} setAccounts={setAccounts} />;
-      case 'statistics':  return <Statistics strategies={strategies} />;
       case 'costs':       return <Costs />;
-      case 'ai-advisor':  return <AIAdvisor strategies={strategies} />;
+      case 'roadmap':     return <Roadmap accounts={accounts} strategies={strategies} />;
+      case 'insights':    return <Insights strategies={strategies} />;
       default:            return <Dashboard strategies={strategies} accounts={accounts} onNav={setActivePage} />;
     }
   }

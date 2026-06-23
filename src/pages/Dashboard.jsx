@@ -182,7 +182,7 @@ function KpiCards({ trades, startBal }) {
   return (
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12, marginBottom: 20 }}>
       {kpis.map(k => (
-        <Card key={k.label}>
+        <Card key={k.label} style={{ minWidth: 0 }}>
           <MetricVal label={k.label} value={k.value} color={k.color} size={24} />
         </Card>
       ))}
@@ -332,7 +332,7 @@ function ExtendedMetrics({ trades, startBal }) {
   return (
     <Card style={{ marginBottom: 20 }}>
       <SectionHeader label="General Metrics" info="Advanced risk-adjusted performance statistics calculated from your full trade history." />
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 20 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: 20 }}>
         {metrics.map(m => (
           <div key={m.label} style={{ borderBottom: `1px solid ${t.border}`, paddingBottom: 12 }}>
             <div style={{ fontSize: 10, color: t.textTer, marginBottom: 4, fontWeight: 500, letterSpacing: '0.03em' }}>
@@ -378,7 +378,7 @@ function MonthlyCalendar({ trades, startBal }) {
     <Card>
       <SectionHeader label="Monthly Calendar" info="Monthly P&L breakdown. Each cell shows the return %, trade count, and win rate for that month. Green = profit, red = loss." />
       <div style={{ overflowX: 'auto' }}>
-        <table style={{ width: '100%', borderCollapse: 'separate', borderSpacing: '3px 3px', minWidth: 600 }}>
+        <table style={{ width: '100%', borderCollapse: 'separate', borderSpacing: '3px 3px', minWidth: 600, tableLayout: 'fixed' }}>
           <thead>
             <tr>
               <th style={{ fontSize: 10, color: t.textTer, fontWeight: 600, textAlign: 'left', padding: '0 4px 8px', width: 40 }}></th>
@@ -407,17 +407,17 @@ function MonthlyCalendar({ trades, startBal }) {
                         {cell ? (
                           <div style={{
                             background: cellColor(cell.pct),
-                            borderRadius: 6, padding: '6px 4px',
-                            textAlign: 'center', minWidth: 44,
+                            borderRadius: 6, padding: '4px 2px',
+                            textAlign: 'center', overflow: 'hidden',
                           }}>
-                            <div style={{ fontSize: 11, fontWeight: 700, color: cell.pct >= 0 ? t.accent : t.red, lineHeight: 1.2 }}>
+                            <div style={{ fontSize: 10, fontWeight: 700, color: cell.pct >= 0 ? t.accent : t.red, lineHeight: 1.2, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                               {cell.pct >= 0 ? '+' : ''}{cell.pct.toFixed(1)}%
                             </div>
-                            <div style={{ fontSize: 9, color: t.textTer, marginTop: 1 }}>{fmtK(cell.count)} trades</div>
-                            <div style={{ fontSize: 9, color: t.textTer }}>{cell.winRate}%</div>
+                            <div style={{ fontSize: 8, color: t.textTer, marginTop: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{fmtK(cell.count)} tr</div>
+                            <div style={{ fontSize: 8, color: t.textTer, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{cell.winRate}%</div>
                           </div>
                         ) : (
-                          <div style={{ background: t.cardInner, borderRadius: 6, padding: '6px 4px', textAlign: 'center', minWidth: 44 }}>
+                          <div style={{ background: t.cardInner, borderRadius: 6, padding: '4px 2px', textAlign: 'center', overflow: 'hidden' }}>
                             <div style={{ fontSize: 11, color: t.textTer }}>—</div>
                           </div>
                         )}
@@ -529,7 +529,7 @@ function RollingCharts({ trades }) {
   const sortinoData = useMemo(() => rollingSortinoData(trades, 30), [trades]);
 
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, marginTop: 20 }}>
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: 12, marginTop: 20 }}>
       <RollingChart title="Rolling Returns (30d)"  info="30-day rolling sum of P&L. Shows how your profitability has evolved over rolling 30-day windows. Rising = consistently profitable phase."  data={retData}     color={t.accent}   suffix="" />
       <RollingChart title="Rolling Sharpe (30d)"   info="30-day rolling Sharpe ratio. Measures return per unit of risk. Above 1.0 is good, above 2.0 is excellent. Negative means losing phase."   data={sharpeData}  color="#4A90D9"    suffix="" />
       <RollingChart title="Rolling Sortino (30d)"  info="30-day rolling Sortino ratio. Like Sharpe but only penalises downside volatility — gives a better picture of how you manage losing trades." data={sortinoData} color="#9B6FD4"    suffix="" />
@@ -823,7 +823,7 @@ export default function Dashboard({ strategies, accounts, onNav }) {
   const today = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
   return (
-    <div style={{ padding: '28px 32px', minHeight: '100vh' }}>
+    <div style={{ padding: '28px 32px', minHeight: '100vh', overflowX: 'hidden' }}>
       {/* Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24 }}>
         <div>
