@@ -139,8 +139,8 @@ function EmptyState({ onNav }) {
 function ChartTooltip({ active, payload, label, prefix = '', suffix = '', color }) {
   if (!active || !payload?.length) return null;
   return (
-    <div style={{ background: t.card, border: `1px solid ${t.border}`, borderRadius: 10, padding: '8px 12px' }}>
-      <div style={{ fontSize: 11, color: t.textSec, marginBottom: 4 }}>{label}</div>
+    <div style={{ background: t.card, border: `1px solid ${t.border}`, borderRadius: 8, padding: '8px 12px', boxShadow: t.cardShadow }}>
+      <div style={{ fontSize: 11, color: t.textTer, marginBottom: 3 }}>{label}</div>
       <div style={{ fontSize: 13, fontWeight: 600, color: color || t.accent }}>
         {prefix}{Number(payload[0].value).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}{suffix}
       </div>
@@ -366,12 +366,12 @@ function MonthlyCalendar({ trades, startBal }) {
 
   function cellColor(pct) {
     if (pct == null) return 'transparent';
-    if (pct >  5)  return 'rgba(48,209,88,0.25)';
-    if (pct >  2)  return 'rgba(48,209,88,0.15)';
-    if (pct >  0)  return 'rgba(48,209,88,0.08)';
-    if (pct > -2)  return 'rgba(255,69,58,0.08)';
-    if (pct > -5)  return 'rgba(255,69,58,0.16)';
-    return 'rgba(255,69,58,0.28)';
+    if (pct >  5)  return 'rgba(45,189,110,0.20)';
+    if (pct >  2)  return 'rgba(45,189,110,0.13)';
+    if (pct >  0)  return 'rgba(45,189,110,0.08)';
+    if (pct > -2)  return 'rgba(240,61,61,0.08)';
+    if (pct > -5)  return 'rgba(240,61,61,0.14)';
+    return 'rgba(240,61,61,0.22)';
   }
 
   return (

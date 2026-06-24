@@ -4,11 +4,11 @@ import PropFirmAnalysis from './strategies/PropFirmAnalysis.jsx';
 
 // ─── design tokens ────────────────────────────────────────────────────────────
 const C = {
-  bg: '#0F0F16', card: '#17171F', border: 'rgba(255,255,255,0.07)', shadow: 'none',
-  text: '#F0F0FF', textSec: '#8888AA', textTer: '#55556A',
+  bg: '#F4F6F8', card: '#FFFFFF', border: '#E8ECF0', shadow: '0 1px 4px rgba(0,0,0,0.06)',
+  text: '#0F1728', textSec: '#5A6478', textTer: '#9AA3B2',
   accent: '#A1D533', accentText: '#000000',
-  red: '#FF453A', green: '#30D158', divider: 'rgba(255,255,255,0.07)',
-  input: '#1A1A24', inputBorder: 'rgba(255,255,255,0.07)',
+  red: '#F03D3D', green: '#2DBD6E', divider: '#E8ECF0',
+  input: '#F4F6F8', inputBorder: '#E8ECF0',
 };
 
 const SOURCE_ICONS = {
@@ -128,7 +128,7 @@ function StrategyCard({ strategy, isSelected, onClick, onDelete }) {
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ fontSize: 14, fontWeight: 600, color: C.text, marginBottom: 4, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{strategy.label}</div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
-            <span style={{ fontSize: 10, fontWeight: 600, padding: '2px 7px', borderRadius: 5, background: 'rgba(161,213,51,0.12)', color: '#A1D533' }}>
+            <span style={{ fontSize: 10, fontWeight: 600, padding: '2px 7px', borderRadius: 5, background: '#F0F7E0', color: '#3D7A00' }}>
               {SOURCE_LABELS[strategy.source] || strategy.source}
             </span>
             <span style={{ fontSize: 11, color: C.textSec }}>{trades.length} trades</span>
@@ -266,7 +266,7 @@ function AddStrategyModal({ onSave, onClose }) {
         )}
 
         {['mt4mt5', 'ctrader', 'tradelocker'].includes(source) && (
-          <div style={{ background: 'rgba(255,159,10,0.08)', border: '1px solid rgba(255,159,10,0.2)', borderRadius: 10, padding: '14px 16px', fontSize: 13, color: '#FF9F0A', lineHeight: 1.6 }}>
+          <div style={{ background: '#FFF8E6', border: '1px solid #FFE08A', borderRadius: 10, padding: '14px 16px', fontSize: 13, color: '#8A6500', lineHeight: 1.6 }}>
             Live API integration for {SOURCE_LABELS[source]} is coming soon. Save the strategy and import data via CSV in the meantime.
           </div>
         )}
@@ -451,7 +451,7 @@ function AnalysisCard({ analysis, isSelected, onClick, onDelete }) {
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ fontSize: 13, fontWeight: 600, color: C.text, marginBottom: 4, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{analysis.name}</div>
           <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-            <span style={{ fontSize: 10, fontWeight: 600, padding: '2px 7px', borderRadius: 5, background: 'rgba(10,132,255,0.12)', color: '#0A84FF' }}>{analysis.firmLabel}</span>
+            <span style={{ fontSize: 10, fontWeight: 600, padding: '2px 7px', borderRadius: 5, background: '#E8F4FD', color: '#1A56A4' }}>{analysis.firmLabel}</span>
             {analysis.strategyLabel && <span style={{ fontSize: 11, color: C.textSec }}>→ {analysis.strategyLabel}</span>}
           </div>
           <div style={{ fontSize: 10, color: C.textTer, marginTop: 3 }}>DD {analysis.rules.maxTotalDD}% · Target {analysis.rules.target}%</div>
