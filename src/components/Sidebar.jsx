@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { DARK as t } from '../theme';
 
 const navItems = [
@@ -11,7 +12,7 @@ const navItems = [
 
 function NavIcon({ id }) {
   const props = {
-    width: 15, height: 15, viewBox: '0 0 24 24', fill: 'none',
+    width: 16, height: 16, viewBox: '0 0 24 24', fill: 'none',
     stroke: 'currentColor', strokeWidth: 1.8, strokeLinecap: 'round', strokeLinejoin: 'round',
   };
   switch (id) {
@@ -31,62 +32,135 @@ function NavIcon({ id }) {
   }
 }
 
+function ChevronLeft() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+      <polyline points="15,18 9,12 15,6" />
+    </svg>
+  );
+}
+
+function ChevronRight() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
+      <polyline points="9,18 15,12 9,6" />
+    </svg>
+  );
+}
+
 export default function Sidebar({ active, onNav }) {
+  const [collapsed, setCollapsed] = useState(() => {
+    try { return localStorage.getItem('sidebar-collapsed') === 'true'; }
+    catch { return false; }
+  });
+
+  function toggle() {
+    setCollapsed(prev => {
+      const next = !prev;
+      try { localStorage.setItem('sidebar-collapsed', String(next)); } catch {}
+      return next;
+    });
+  }
+
+  const w = collapsed ? 52 : 200;
+
   return (
     <aside style={{
-      width: 200, minHeight: '100vh',
+      width: w,
+      minHeight: '100vh',
       background: t.sidebar,
       borderRight: `1px solid ${t.sidebarBorder}`,
-      display: 'flex', flexDirection: 'column',
-      padding: '24px 0', flexShrink: 0,
+      display: 'flex',
+      flexDirection: 'column',
+      padding: '24px 0',
+      flexShrink: 0,
+      transition: 'width 200ms ease',
+      overflow: 'hidden',
+      position: 'relative',
     }}>
       {/* Logo */}
-      <div style={{ padding: '0 20px 28px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <div style={{ width: 26, height: 26, borderRadius: 8, background: t.brand, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <span style={{ fontSize: 13, fontWeight: 700, color: '#000' }}>R</span>
+      <div style={{ padding: collapsed ? '0 0 28px' : '0 20px 28px', display: 'flex', alignItems: 'center', justifyContent: collapsed ? 'center' : 'flex-start' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: collapsed ? 0 : 8, minWidth: 0 }}>
+          <div style={{ width: 26, height: 26, borderRadius: 8, background: t.brand, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            <span style={{ fontSize: 13, fontWeight: 700, color: '#000' }}>F</span>
           </div>
-          <span style={{ fontSize: 15, fontWeight: 700, color: t.text, letterSpacing: '-0.3px' }}>Risk Driver</span>
+          {!collapsed && (
+            <span style={{ fontSize: 15, fontWeight: 700, color: t.text, letterSpacing: '-0.3px', whiteSpace: 'nowrap' }}>FundIQ</span>
+          )}
         </div>
       </div>
 
+      {/* Toggle button */}
+      <button
+        onClick={toggle}
+        title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
+        style={{
+          position: 'absolute', top: 24, right: collapsed ? '50%' : 10,
+          transform: collapsed ? 'translateX(50%)' : 'none',
+          width: 22, height: 22, borderRadius: 6,
+          border: `1px solid ${t.border}`,
+          background: t.card,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          cursor: 'pointer', color: t.textTer,
+          padding: 0, transition: 'right 200ms ease, transform 200ms ease',
+          zIndex: 10,
+        }}
+      >
+        {collapsed ? <ChevronRight /> : <ChevronLeft />}
+      </button>
+
       {/* Nav */}
-      <nav style={{ flex: 1, padding: '0 10px', display: 'flex', flexDirection: 'column', gap: 2 }}>
+      <nav style={{ flex: 1, padding: collapsed ? '0 6px' : '0 10px', display: 'flex', flexDirection: 'column', gap: 2 }}>
         {navItems.map(item => {
           const isActive = active === item.id;
           return (
-            <button key={item.id} onClick={() => onNav(item.id)} style={{
-              display: 'flex', alignItems: 'center', gap: 9,
-              width: '100%', height: 38, padding: '0 12px',
-              border: 'none', borderRadius: 8,
-              borderLeft: isActive ? `2px solid ${t.brand}` : '2px solid transparent',
-              background: isActive ? t.navActive : 'transparent',
-              color: isActive ? t.navActiveText : t.navText,
-              fontSize: 13, fontWeight: 500,
-              fontFamily: 'inherit', cursor: 'pointer', textAlign: 'left',
-              transition: 'background 120ms ease, color 120ms ease',
-            }}>
+            <button
+              key={item.id}
+              onClick={() => onNav(item.id)}
+              title={collapsed ? item.label : undefined}
+              style={{
+                display: 'flex', alignItems: 'center',
+                justifyContent: collapsed ? 'center' : 'flex-start',
+                gap: collapsed ? 0 : 9,
+                width: '100%', height: 38,
+                padding: collapsed ? '0' : '0 12px',
+                border: 'none', borderRadius: 8,
+                borderLeft: isActive ? `2px solid ${t.brand}` : '2px solid transparent',
+                background: isActive ? t.navActive : 'transparent',
+                color: isActive ? t.navActiveText : t.navText,
+                fontSize: 13, fontWeight: 500,
+                fontFamily: 'inherit', cursor: 'pointer', textAlign: 'left',
+                transition: 'background 120ms ease, color 120ms ease',
+                whiteSpace: 'nowrap', overflow: 'hidden',
+              }}
+            >
               <NavIcon id={item.id} />
-              {item.label}
+              {!collapsed && item.label}
             </button>
           );
         })}
       </nav>
 
       {/* User */}
-      <div style={{ padding: '16px 20px', borderTop: `1px solid ${t.sidebarBorder}` }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <div style={{
-            width: 28, height: 28, borderRadius: '50%',
-            background: t.rowBg, border: `1px solid ${t.cardBorder}`,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: 12, fontWeight: 600, color: t.text,
-          }}>T</div>
+      <div style={{
+        padding: collapsed ? '16px 0' : '16px 20px',
+        borderTop: `1px solid ${t.sidebarBorder}`,
+        display: 'flex', alignItems: 'center',
+        justifyContent: collapsed ? 'center' : 'flex-start',
+        gap: collapsed ? 0 : 10,
+      }}>
+        <div style={{
+          width: 28, height: 28, borderRadius: '50%',
+          background: t.rowBg, border: `1px solid ${t.cardBorder}`,
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          fontSize: 12, fontWeight: 600, color: t.text, flexShrink: 0,
+        }}>T</div>
+        {!collapsed && (
           <div>
             <div style={{ fontSize: 13, fontWeight: 500, color: t.text }}>Teun</div>
             <div style={{ fontSize: 11, color: t.textTer }}>Pro plan</div>
           </div>
-        </div>
+        )}
       </div>
     </aside>
   );

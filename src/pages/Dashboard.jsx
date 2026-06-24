@@ -820,15 +820,31 @@ export default function Dashboard({ strategies, accounts, onNav }) {
     return { activeTrades: s?.tradeList || [], startBal: 10000 };
   }, [accounts, strategies, selectedAccount]);
 
+  const currentUser = 'Teun';
   const today = new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+  const firstTradeDate = useMemo(() => {
+    if (!activeTrades.length) return null;
+    const dates = activeTrades.map(tr => tr.openDate || tr.date || tr.closeDate).filter(Boolean).sort();
+    return dates[0] ? new Date(dates[0]).toLocaleDateString('en-US', { day: 'numeric', month: 'long', year: 'numeric' }) : null;
+  }, [activeTrades]);
+  const liveSince = firstTradeDate;
 
   return (
     <div style={{ padding: '28px 32px', minHeight: '100vh', overflowX: 'hidden' }}>
       {/* Header */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 24 }}>
         <div>
-          <h1 style={{ fontSize: 24, fontWeight: 600, color: t.text, margin: 0, letterSpacing: '-0.4px' }}>Dashboard</h1>
+          <h1 style={{ fontSize: 24, fontWeight: 600, color: t.text, margin: 0, letterSpacing: '-0.4px' }}>Welcome, {currentUser}</h1>
           <div style={{ fontSize: 12, color: t.textSec, marginTop: 3 }}>{today}</div>
+          {liveSince && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginTop: 5 }}>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={t.textTer} strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+                <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+              </svg>
+              <span style={{ fontSize: 12, color: t.textTer }}>Strategy live since {liveSince}</span>
+            </div>
+          )}
         </div>
         <AccountSelector accounts={accounts} selected={selectedAccount} onChange={setSelectedAccount} />
       </div>
