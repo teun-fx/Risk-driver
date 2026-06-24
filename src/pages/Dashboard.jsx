@@ -57,7 +57,7 @@ function filterByPeriod(trades, period) {
 
 function SectionLabel({ children }) {
   return (
-    <div style={{ fontSize: 11, fontWeight: 600, color: t.textTer, letterSpacing: '0.09em', textTransform: 'uppercase', marginBottom: 14 }}>
+    <div style={{ fontSize: 10, fontWeight: 600, color: t.textTer, letterSpacing: '1.5px', textTransform: 'uppercase', marginBottom: 14 }}>
       {children}
     </div>
   );
@@ -112,12 +112,12 @@ function Card({ children, style }) {
   );
 }
 
-function MetricVal({ label, value, color, size = 22, sub }) {
+function MetricVal({ label, value, color, size = 28, sub }) {
   return (
     <div>
-      <div style={{ fontSize: 11, color: t.textSec, marginBottom: 4, fontWeight: 500, letterSpacing: '0.03em' }}>{label}</div>
-      <div style={{ fontSize: size, fontWeight: 600, color: color || t.text, letterSpacing: '-0.3px', lineHeight: 1.1 }}>{value}</div>
-      {sub && <div style={{ fontSize: 11, color: t.textTer, marginTop: 2 }}>{sub}</div>}
+      <div style={{ fontSize: 10, color: t.textTer, marginBottom: 8, fontWeight: 600, letterSpacing: '1.5px', textTransform: 'uppercase' }}>{label}</div>
+      <div style={{ fontSize: size, fontWeight: 700, color: color || t.text, letterSpacing: '-0.5px', lineHeight: 1.1 }}>{value}</div>
+      {sub && <div style={{ fontSize: 11, color: t.textTer, marginTop: 3 }}>{sub}</div>}
     </div>
   );
 }
@@ -235,8 +235,8 @@ function EquitySection({ trades, startBal }) {
           {TIME_FILTERS.map(f => (
             <button key={f} onClick={() => setTimeFilter(f)} style={{
               padding: '4px 10px', borderRadius: 6, border: `1px solid ${timeFilter === f ? t.accent : t.border}`,
-              background: timeFilter === f ? 'rgba(48,209,88,0.1)' : 'transparent',
-              color: timeFilter === f ? t.accent : t.textSec,
+              background: timeFilter === f ? 'rgba(161,213,51,0.1)' : 'transparent',
+              color: timeFilter === f ? t.brand : t.textTer,
               fontFamily: 'inherit', fontSize: 11, fontWeight: 600, cursor: 'pointer',
             }}>{f}</button>
           ))}
@@ -366,12 +366,12 @@ function MonthlyCalendar({ trades, startBal }) {
 
   function cellColor(pct) {
     if (pct == null) return 'transparent';
-    if (pct >  5)  return 'rgba(48,209,88,0.35)';
-    if (pct >  2)  return 'rgba(48,209,88,0.2)';
-    if (pct >  0)  return 'rgba(48,209,88,0.1)';
-    if (pct > -2)  return 'rgba(255,69,58,0.12)';
-    if (pct > -5)  return 'rgba(255,69,58,0.25)';
-    return 'rgba(255,69,58,0.4)';
+    if (pct >  5)  return 'rgba(48,209,88,0.25)';
+    if (pct >  2)  return 'rgba(48,209,88,0.15)';
+    if (pct >  0)  return 'rgba(48,209,88,0.08)';
+    if (pct > -2)  return 'rgba(255,69,58,0.08)';
+    if (pct > -5)  return 'rgba(255,69,58,0.16)';
+    return 'rgba(255,69,58,0.28)';
   }
 
   return (

@@ -9,10 +9,10 @@ import {
 } from '../../utils/tradeStats';
 
 const C = {
-  bg: '#F2F2F7', card: '#FFFFFF', border: '#E5E5EA', shadow: '0 1px 3px rgba(0,0,0,0.07)',
-  text: '#1D1D1F', textSec: '#6E6E73', textTer: '#AEAEB2',
-  accent: '#A1D533', red: '#D63A30', green: '#28B548', orange: '#E07A00',
-  divider: '#E5E5EA',
+  bg: '#0F0F16', card: '#17171F', border: 'rgba(255,255,255,0.07)', shadow: 'none',
+  text: '#F0F0FF', textSec: '#8888AA', textTer: '#55556A',
+  accent: '#A1D533', red: '#FF453A', green: '#30D158', orange: '#FF9F0A',
+  divider: 'rgba(255,255,255,0.07)',
 };
 
 function Card({ title, sub, children, style = {} }) {
