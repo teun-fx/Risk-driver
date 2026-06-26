@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import { parseTradeFile } from '../services/csvParser.js';
 import PropFirmAnalysis from './strategies/PropFirmAnalysis.jsx';
+import BreachCalculator from './strategies/BreachCalculator.jsx';
 
 // ─── design tokens ────────────────────────────────────────────────────────────
 const C = {
@@ -470,6 +471,7 @@ export default function StrategiesPage({ strategies, setStrategies }) {
   const [analyses, setAnalyses] = useState([]);
   const [showAddStrategy, setShowAddStrategy] = useState(false);
   const [showAddAnalysis, setShowAddAnalysis] = useState(false);
+  const [analysisTab, setAnalysisTab] = useState('overview');
 
   const selectedAnalysis = analyses.find(a => a.id === selectedAnalysisId) || null;
   const analysisStrategy = selectedAnalysis ? (strategies.find(s => s.id === selectedAnalysis.strategyId) || null) : null;
@@ -547,7 +549,31 @@ export default function StrategiesPage({ strategies, setStrategies }) {
               </div>
             </div>
           ) : (
-            <PropFirmAnalysis analysis={selectedAnalysis} strategy={analysisStrategy} />
+            <>
+              {/* Tab bar */}
+              <div style={{ display: 'flex', gap: 4, marginBottom: 24, borderBottom: `1px solid ${C.border}`, paddingBottom: 0 }}>
+                {[{ id: 'overview', label: 'Overview' }, { id: 'breach', label: 'Breach Calculator' }].map(tab => (
+                  <button
+                    key={tab.id}
+                    onClick={() => setAnalysisTab(tab.id)}
+                    style={{
+                      padding: '8px 16px',
+                      fontSize: 13, fontWeight: 500,
+                      background: 'none', border: 'none', cursor: 'pointer',
+                      fontFamily: 'inherit',
+                      color: analysisTab === tab.id ? C.text : C.textSec,
+                      borderBottom: analysisTab === tab.id ? `2px solid ${C.accent}` : '2px solid transparent',
+                      marginBottom: -1,
+                      transition: 'color 120ms ease',
+                    }}
+                  >{tab.label}</button>
+                ))}
+              </div>
+              {analysisTab === 'overview'
+                ? <PropFirmAnalysis analysis={selectedAnalysis} strategy={analysisStrategy} />
+                : <BreachCalculator trades={analysisStrategy?.tradeList || []} />
+              }
+            </>
           )}
         </div>
       </div>
