@@ -519,12 +519,31 @@ export default function StrategiesPage({ strategies, setStrategies }) {
         </button>
       </div>
 
-      {/* RIGHT COLUMN — Prop Firm Route */}
+      {/* RIGHT COLUMN */}
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
 
-        {/* Right header */}
-        {analyses.length > 0 && (
-          <div style={{ padding: '20px 28px', borderBottom: `1px solid ${C.border}`, background: C.card }}>
+        {/* Tab bar — always visible */}
+        <div style={{ padding: '0 28px', borderBottom: `1px solid ${C.border}`, background: C.card, display: 'flex', gap: 4 }}>
+          {[{ id: 'overview', label: 'Prop Firm Analysis' }, { id: 'breach', label: 'Breach Calculator' }].map(tab => (
+            <button
+              key={tab.id}
+              onClick={() => setAnalysisTab(tab.id)}
+              style={{
+                padding: '14px 16px 12px',
+                fontSize: 13, fontWeight: 500,
+                background: 'none', border: 'none', cursor: 'pointer',
+                fontFamily: 'inherit',
+                color: analysisTab === tab.id ? C.text : C.textSec,
+                borderBottom: analysisTab === tab.id ? `2px solid ${C.accent}` : '2px solid transparent',
+                transition: 'color 120ms ease',
+              }}
+            >{tab.label}</button>
+          ))}
+        </div>
+
+        {/* Analysis cards — only in overview tab */}
+        {analysisTab === 'overview' && analyses.length > 0 && (
+          <div style={{ padding: '16px 28px', borderBottom: `1px solid ${C.border}`, background: C.card }}>
             <div style={{ display: 'flex', gap: 10, overflowX: 'auto', paddingBottom: 2, flexWrap: 'wrap' }}>
               {analyses.map(a => (
                 <AnalysisCard key={a.id} analysis={a} isSelected={selectedAnalysisId === a.id}
@@ -537,43 +556,27 @@ export default function StrategiesPage({ strategies, setStrategies }) {
 
         {/* Right content */}
         <div style={{ flex: 1, overflowY: 'auto', padding: '24px 28px' }}>
-          {!selectedAnalysis ? (
+          {analysisTab === 'breach' ? (
+            <BreachCalculator trades={
+              (selectedStrategyId
+                ? strategies.find(s => s.id === selectedStrategyId)?.tradeList
+                : null)
+              || analysisStrategy?.tradeList
+              || []
+            } />
+          ) : !selectedAnalysis ? (
             <div style={{ textAlign: 'center', padding: '60px 40px' }}>
               <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke={C.textTer} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" style={{ marginBottom: 14, display: 'block', margin: '0 auto 14px' }}>
-                  <polyline points="3,17 9,11 13,14 21,6" />
-                  <polyline points="15,6 21,6 21,12" />
-                </svg>
-              <div style={{ fontSize: 18, fontWeight: 600, color: C.text, marginBottom: 8 }}>No strategy found</div>
+                <polyline points="3,17 9,11 13,14 21,6" />
+                <polyline points="15,6 21,6 21,12" />
+              </svg>
+              <div style={{ fontSize: 18, fontWeight: 600, color: C.text, marginBottom: 8 }}>No analysis selected</div>
               <div style={{ fontSize: 13, color: C.textSec, maxWidth: 340, margin: '0 auto 24px', lineHeight: 1.6 }}>
-                Add your strategy to get started.
+                Create a prop firm analysis to get started.
               </div>
             </div>
           ) : (
-            <>
-              {/* Tab bar */}
-              <div style={{ display: 'flex', gap: 4, marginBottom: 24, borderBottom: `1px solid ${C.border}`, paddingBottom: 0 }}>
-                {[{ id: 'overview', label: 'Overview' }, { id: 'breach', label: 'Breach Calculator' }].map(tab => (
-                  <button
-                    key={tab.id}
-                    onClick={() => setAnalysisTab(tab.id)}
-                    style={{
-                      padding: '8px 16px',
-                      fontSize: 13, fontWeight: 500,
-                      background: 'none', border: 'none', cursor: 'pointer',
-                      fontFamily: 'inherit',
-                      color: analysisTab === tab.id ? C.text : C.textSec,
-                      borderBottom: analysisTab === tab.id ? `2px solid ${C.accent}` : '2px solid transparent',
-                      marginBottom: -1,
-                      transition: 'color 120ms ease',
-                    }}
-                  >{tab.label}</button>
-                ))}
-              </div>
-              {analysisTab === 'overview'
-                ? <PropFirmAnalysis analysis={selectedAnalysis} strategy={analysisStrategy} />
-                : <BreachCalculator trades={analysisStrategy?.tradeList || []} />
-              }
-            </>
+            <PropFirmAnalysis analysis={selectedAnalysis} strategy={analysisStrategy} />
           )}
         </div>
       </div>
