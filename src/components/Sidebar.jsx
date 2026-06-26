@@ -2,12 +2,14 @@ import { useState } from 'react';
 import { DARK as t } from '../theme';
 
 const navItems = [
-  { id: 'dashboard',  label: 'Dashboard' },
-  { id: 'strategies', label: 'Strategies' },
-  { id: 'accounts',   label: 'Accounts' },
-  { id: 'costs',      label: 'Costs' },
-  { id: 'roadmap',    label: 'Roadmap' },
-  { id: 'insights',   label: 'Insights' },
+  { id: 'dashboard',   label: 'Dashboard' },
+  { id: 'strategies',  label: 'Strategies' },
+  { id: 'propfirm',    label: 'Prop Firm Analysis' },
+  { id: 'breach',      label: 'Breach Calculator' },
+  { id: 'accounts',    label: 'Accounts' },
+  { id: 'costs',       label: 'Costs' },
+  { id: 'roadmap',     label: 'Roadmap' },
+  { id: 'insights',    label: 'Insights' },
 ];
 
 function NavIcon({ id }) {
@@ -24,6 +26,10 @@ function NavIcon({ id }) {
       return <svg {...props}><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><line x1="6" y1="15" x2="9" y2="15"/></svg>;
     case 'costs':
       return <svg {...props}><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.5 9.5C9.5 8.1 10.6 7 12 7c1.4 0 2.5 1 2.5 2.2 0 1.3-1.1 2-2.5 2s-2.5.8-2.5 2.3c0 1.3 1.1 2.5 2.5 2.5s2.5-1 2.5-2.5"/></svg>;
+    case 'propfirm':
+      return <svg {...props}><circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 3"/></svg>;
+    case 'breach':
+      return <svg {...props}><path d="M12 2L2 7v5c0 5.25 4.25 10.15 10 11.35C17.75 22.15 22 17.25 22 12V7L12 2z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>;
     case 'roadmap':
       return <svg {...props}><path d="M3 17l4-8 4 4 4-6 4 2"/><circle cx="3" cy="17" r="1.5" fill="currentColor" stroke="none"/><circle cx="19" cy="9" r="1.5" fill="currentColor" stroke="none"/></svg>;
     case 'insights':

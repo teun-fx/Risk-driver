@@ -7,6 +7,8 @@ import Statistics from './pages/Statistics';
 import Costs from './pages/Costs';
 import Roadmap from './pages/Roadmap';
 import Insights from './pages/Insights';
+import PropFirmPage from './pages/PropFirmPage';
+import BreachPage from './pages/BreachPage';
 import { ThemeContext } from './ThemeContext';
 import { DARK } from './theme';
 
@@ -165,6 +167,8 @@ export default function App() {
     switch (activePage) {
       case 'dashboard':   return <Dashboard strategies={strategies} accounts={accounts} onNav={setActivePage} />;
       case 'strategies':  return <Strategies strategies={strategies} setStrategies={setStrategies} />;
+      case 'propfirm':    return <PropFirmPage strategies={strategies} />;
+      case 'breach':      return <BreachPage strategies={strategies} accounts={accounts} />;
       case 'accounts':    return <Accounts accounts={accounts} setAccounts={setAccounts} />;
       case 'costs':       return <Costs />;
       case 'roadmap':     return <Roadmap accounts={accounts} strategies={strategies} />;

@@ -1,7 +1,6 @@
 import { useState, useRef } from 'react';
 import { parseTradeFile } from '../services/csvParser.js';
 import PropFirmAnalysis from './strategies/PropFirmAnalysis.jsx';
-import BreachCalculator from './strategies/BreachCalculator.jsx';
 
 // ─── design tokens ────────────────────────────────────────────────────────────
 const C = {
@@ -471,7 +470,6 @@ export default function StrategiesPage({ strategies, setStrategies }) {
   const [analyses, setAnalyses] = useState([]);
   const [showAddStrategy, setShowAddStrategy] = useState(false);
   const [showAddAnalysis, setShowAddAnalysis] = useState(false);
-  const [analysisTab, setAnalysisTab] = useState('overview');
 
   const selectedAnalysis = analyses.find(a => a.id === selectedAnalysisId) || null;
   const analysisStrategy = selectedAnalysis ? (strategies.find(s => s.id === selectedAnalysis.strategyId) || null) : null;
@@ -519,31 +517,11 @@ export default function StrategiesPage({ strategies, setStrategies }) {
         </button>
       </div>
 
-      {/* RIGHT COLUMN */}
+      {/* RIGHT COLUMN — Prop Firm Analysis */}
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
 
-        {/* Tab bar — always visible */}
-        <div style={{ padding: '0 28px', borderBottom: `1px solid ${C.border}`, background: C.card, display: 'flex', gap: 4 }}>
-          {[{ id: 'overview', label: 'Prop Firm Analysis' }, { id: 'breach', label: 'Breach Calculator' }].map(tab => (
-            <button
-              key={tab.id}
-              onClick={() => setAnalysisTab(tab.id)}
-              style={{
-                padding: '14px 16px 12px',
-                fontSize: 13, fontWeight: 500,
-                background: 'none', border: 'none', cursor: 'pointer',
-                fontFamily: 'inherit',
-                color: analysisTab === tab.id ? C.text : C.textSec,
-                borderBottom: analysisTab === tab.id ? `2px solid ${C.accent}` : '2px solid transparent',
-                transition: 'color 120ms ease',
-              }}
-            >{tab.label}</button>
-          ))}
-        </div>
-
-        {/* Analysis cards — only in overview tab */}
-        {analysisTab === 'overview' && analyses.length > 0 && (
-          <div style={{ padding: '16px 28px', borderBottom: `1px solid ${C.border}`, background: C.card }}>
+        {analyses.length > 0 && (
+          <div style={{ padding: '20px 28px', borderBottom: `1px solid ${C.border}`, background: C.card }}>
             <div style={{ display: 'flex', gap: 10, overflowX: 'auto', paddingBottom: 2, flexWrap: 'wrap' }}>
               {analyses.map(a => (
                 <AnalysisCard key={a.id} analysis={a} isSelected={selectedAnalysisId === a.id}
@@ -554,17 +532,8 @@ export default function StrategiesPage({ strategies, setStrategies }) {
           </div>
         )}
 
-        {/* Right content */}
         <div style={{ flex: 1, overflowY: 'auto', padding: '24px 28px' }}>
-          {analysisTab === 'breach' ? (
-            <BreachCalculator trades={
-              (selectedStrategyId
-                ? strategies.find(s => s.id === selectedStrategyId)?.tradeList
-                : null)
-              || analysisStrategy?.tradeList
-              || []
-            } />
-          ) : !selectedAnalysis ? (
+          {!selectedAnalysis ? (
             <div style={{ textAlign: 'center', padding: '60px 40px' }}>
               <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke={C.textTer} strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" style={{ marginBottom: 14, display: 'block', margin: '0 auto 14px' }}>
                 <polyline points="3,17 9,11 13,14 21,6" />
