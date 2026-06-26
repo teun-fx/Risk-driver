@@ -5,6 +5,7 @@ import Strategies from './pages/Strategies';
 import Accounts from './pages/Accounts';
 import Statistics from './pages/Statistics';
 import Costs from './pages/Costs';
+import Risk from './pages/Risk';
 import Roadmap from './pages/Roadmap';
 import Insights from './pages/Insights';
 import { ThemeContext } from './ThemeContext';
@@ -167,6 +168,7 @@ export default function App() {
       case 'strategies':  return <Strategies strategies={strategies} setStrategies={setStrategies} />;
       case 'accounts':    return <Accounts accounts={accounts} setAccounts={setAccounts} />;
       case 'costs':       return <Costs />;
+      case 'risk':        return <Risk />;
       case 'roadmap':     return <Roadmap accounts={accounts} strategies={strategies} />;
       case 'insights':    return <Insights strategies={strategies} />;
       default:            return <Dashboard strategies={strategies} accounts={accounts} onNav={setActivePage} />;

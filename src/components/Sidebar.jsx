@@ -6,6 +6,7 @@ const navItems = [
   { id: 'strategies', label: 'Strategies' },
   { id: 'accounts',   label: 'Accounts' },
   { id: 'costs',      label: 'Costs' },
+  { id: 'risk',       label: 'Risk' },
   { id: 'roadmap',    label: 'Roadmap' },
   { id: 'insights',   label: 'Insights' },
 ];
@@ -24,6 +25,8 @@ function NavIcon({ id }) {
       return <svg {...props}><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><line x1="6" y1="15" x2="9" y2="15"/></svg>;
     case 'costs':
       return <svg {...props}><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.5 9.5C9.5 8.1 10.6 7 12 7c1.4 0 2.5 1 2.5 2.2 0 1.3-1.1 2-2.5 2s-2.5.8-2.5 2.3c0 1.3 1.1 2.5 2.5 2.5s2.5-1 2.5-2.5"/></svg>;
+    case 'risk':
+      return <svg {...props}><path d="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3z"/></svg>;
     case 'roadmap':
       return <svg {...props}><path d="M3 17l4-8 4 4 4-6 4 2"/><circle cx="3" cy="17" r="1.5" fill="currentColor" stroke="none"/><circle cx="19" cy="9" r="1.5" fill="currentColor" stroke="none"/></svg>;
     case 'insights':
