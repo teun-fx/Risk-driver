@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { DARK as t } from '../theme';
+import { useAuth } from '../AuthContext';
 
 const navItems = [
   { id: 'dashboard',   label: 'Dashboard' },
@@ -55,6 +56,7 @@ function ChevronRight() {
 }
 
 export default function Sidebar({ active, onNav }) {
+  const { isViewer } = useAuth();
   const [collapsed, setCollapsed] = useState(() => {
     try { return localStorage.getItem('sidebar-collapsed') === 'true'; }
     catch { return false; }
@@ -146,6 +148,23 @@ export default function Sidebar({ active, onNav }) {
           );
         })}
       </nav>
+
+      {/* View Only badge */}
+      {isViewer && !collapsed && (
+        <div style={{ margin: '0 10px 8px', padding: '6px 10px', background: 'rgba(154,163,178,0.12)', border: '1px solid #E8ECF0', borderRadius: 8, display: 'flex', alignItems: 'center', gap: 6 }}>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={t.textTer} strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+          </svg>
+          <span style={{ fontSize: 11, color: t.textTer, fontWeight: 500 }}>View Only</span>
+        </div>
+      )}
+      {isViewer && collapsed && (
+        <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 8 }}>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={t.textTer} strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" title="View Only">
+            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+          </svg>
+        </div>
+      )}
 
       {/* User */}
       <div style={{

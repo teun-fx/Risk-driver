@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import { DARK as t } from '../theme';
 import { parseTradeFile } from '../services/csvParser.js';
+import { useAuth } from '../AuthContext';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -697,7 +698,7 @@ function AddAccountModal({ onClose, onAdd }) {
 
 // ─── Account card ─────────────────────────────────────────────────────────────
 
-function AccountCard({ account, selected, onSelect, onDelete }) {
+function AccountCard({ account, selected, onSelect, onDelete, isViewer }) {
   return (
     <div
       onClick={() => onSelect(account.id)}
@@ -717,8 +718,8 @@ function AccountCard({ account, selected, onSelect, onDelete }) {
           <span style={{ width: 7, height: 7, borderRadius: '50%', background: account.status === 'active' ? t.accent : t.red, display: 'inline-block' }} />
           <span style={{ fontSize: 11, color: t.textSec }}>{account.status === 'active' ? 'Active' : 'Inactive'}</span>
           <button
-            onClick={e => { e.stopPropagation(); onDelete(account.id); }}
-            style={{ background: 'none', border: 'none', cursor: 'pointer', color: t.textTer, padding: '0 2px', lineHeight: 1, marginLeft: 2 }}
+            onClick={e => { e.stopPropagation(); !isViewer && onDelete(account.id); }}
+            style={{ background: 'none', border: 'none', cursor: isViewer ? 'not-allowed' : 'pointer', color: t.textTer, padding: '0 2px', lineHeight: 1, marginLeft: 2, opacity: isViewer ? 0.3 : 1 }}
             title="Delete account"
           >
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
@@ -798,7 +799,7 @@ function EditAccountModal({ account, onSave, onClose }) {
   );
 }
 
-function AccountDetail({ account, onEdit, onDelete }) {
+function AccountDetail({ account, onEdit, onDelete, isViewer }) {
   const group = account.group || accountGroup(account.type);
   const isCfd     = group === 'cfd';
   const isFutures = group === 'futures';
@@ -813,16 +814,18 @@ function AccountDetail({ account, onEdit, onDelete }) {
             <div style={{ fontSize: 13, color: t.textSec, marginTop: 2 }}>{account.accountType}</div>
           </div>
         </div>
-        <div style={{ display: 'flex', gap: 8 }}>
-          <button onClick={onEdit} style={{
-            padding: '7px 14px', border: `1px solid ${t.border}`, borderRadius: 10,
-            background: 'transparent', color: t.textSec, fontFamily: 'inherit', fontSize: 12, cursor: 'pointer',
-          }}>Edit</button>
-          <button onClick={onDelete} style={{
-            padding: '7px 14px', border: `1px solid ${t.red}`, borderRadius: 10,
-            background: 'transparent', color: t.red, fontFamily: 'inherit', fontSize: 12, cursor: 'pointer',
-          }}>Delete</button>
-        </div>
+        {!isViewer && (
+          <div style={{ display: 'flex', gap: 8 }}>
+            <button onClick={onEdit} style={{
+              padding: '7px 14px', border: `1px solid ${t.border}`, borderRadius: 10,
+              background: 'transparent', color: t.textSec, fontFamily: 'inherit', fontSize: 12, cursor: 'pointer',
+            }}>Edit</button>
+            <button onClick={onDelete} style={{
+              padding: '7px 14px', border: `1px solid ${t.red}`, borderRadius: 10,
+              background: 'transparent', color: t.red, fontFamily: 'inherit', fontSize: 12, cursor: 'pointer',
+            }}>Delete</button>
+          </div>
+        )}
       </div>
 
       <SectionTitle>Account Info</SectionTitle>
@@ -879,6 +882,7 @@ function AccountDetail({ account, onEdit, onDelete }) {
 // ─── Main page ────────────────────────────────────────────────────────────────
 
 export default function Accounts({ accounts, setAccounts }) {
+  const { isViewer } = useAuth();
   const [selected, setSelected]   = useState(accounts[0]?.id ?? null);
   const [showModal, setShowModal] = useState(false);
   const [editAccount, setEditAccount] = useState(null);
@@ -914,16 +918,15 @@ export default function Accounts({ accounts, setAccounts }) {
       <div style={{ display: 'grid', gridTemplateColumns: '280px 1fr', gap: 16 }}>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
           {accounts.map(acc => (
-            <AccountCard key={acc.id} account={acc} selected={selected === acc.id} onSelect={setSelected} onDelete={handleDelete} />
+            <AccountCard key={acc.id} account={acc} selected={selected === acc.id} onSelect={setSelected} onDelete={handleDelete} isViewer={isViewer} />
           ))}
           <button
-            onClick={() => setShowModal(true)}
-            onMouseEnter={e => e.currentTarget.style.borderColor = t.accent}
-            onMouseLeave={e => e.currentTarget.style.borderColor = t.border}
+            onClick={() => !isViewer && setShowModal(true)}
             style={{
               border: `2px dashed ${t.border}`, borderRadius: 16, padding: '20px',
-              background: 'transparent', cursor: 'pointer', textAlign: 'center',
-              fontFamily: 'inherit', color: t.textSec, fontSize: 13, fontWeight: 500,
+              background: 'transparent', cursor: isViewer ? 'not-allowed' : 'pointer',
+              textAlign: 'center', fontFamily: 'inherit', color: t.textSec,
+              fontSize: 13, fontWeight: 500, opacity: isViewer ? 0.5 : 1,
             }}
           >+ Add account</button>
         </div>
@@ -933,6 +936,7 @@ export default function Accounts({ accounts, setAccounts }) {
             account={selectedAccount}
             onEdit={() => setEditAccount(selectedAccount)}
             onDelete={() => handleDelete(selectedAccount.id)}
+            isViewer={isViewer}
           />
         ) : (
           <div style={{ background: t.card, borderRadius: 18, padding: '60px', textAlign: 'center' }}>

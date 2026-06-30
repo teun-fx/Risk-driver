@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import { parseTradeFile } from '../services/csvParser.js';
 import PropFirmAnalysis from './strategies/PropFirmAnalysis.jsx';
+import { useAuth } from '../AuthContext';
 
 // ─── design tokens ────────────────────────────────────────────────────────────
 const C = {
@@ -465,6 +466,7 @@ function AnalysisCard({ analysis, isSelected, onClick, onDelete }) {
 
 // ─── main export ───────────────────────────────────────────────────────────────
 export default function StrategiesPage({ strategies, setStrategies }) {
+  const { isViewer } = useAuth();
   const [selectedStrategyId, setSelectedStrategyId] = useState(null);
   const [selectedAnalysisId, setSelectedAnalysisId] = useState(null);
   const [analyses, setAnalyses] = useState([]);
@@ -508,10 +510,12 @@ export default function StrategiesPage({ strategies, setStrategies }) {
             onDelete={() => { setStrategies(prev => prev.filter(x => x.id !== s.id)); if (selectedStrategyId === s.id) setSelectedStrategyId(null); }} />
         ))}
 
-        <button onClick={() => setShowAddStrategy(true)} style={{
+        <button onClick={() => !isViewer && setShowAddStrategy(true)} style={{
           display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
           padding: '14px', border: `1.5px dashed ${C.border}`, borderRadius: 14,
-          background: 'transparent', cursor: 'pointer', fontFamily: 'inherit', fontSize: 13, color: C.textSec,
+          background: 'transparent', cursor: isViewer ? 'not-allowed' : 'pointer',
+          fontFamily: 'inherit', fontSize: 13, color: C.textSec,
+          opacity: isViewer ? 0.5 : 1,
         }}>
           <span style={{ fontSize: 18, lineHeight: 1 }}>+</span> Add strategy
         </button>

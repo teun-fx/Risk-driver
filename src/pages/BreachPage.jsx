@@ -1,6 +1,7 @@
 import { useState, useMemo, useCallback } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
 import { DARK as t } from '../theme';
+import { useAuth } from '../AuthContext';
 import {
   normalizeTrades, tradesPerMonth, ksTwoSample, lag1Autocorr,
   determineMethod, runSimulation,
@@ -139,6 +140,7 @@ function BreachHistogram({ histogram }) {
 }
 
 export default function BreachPage({ strategies, accounts }) {
+  const { isViewer } = useAuth();
   const [selectedSource, setSelectedSource] = useState('');
   const [ddLimit, setDdLimit] = useState(10);
   const [repurchase, setRepurchase] = useState(2);
@@ -335,7 +337,7 @@ export default function BreachPage({ strategies, accounts }) {
               />
               <InputField label="Simulations" value="5,000" readOnly />
             </div>
-            <Btn onClick={runSim} disabled={running || !hasData}>
+            <Btn onClick={runSim} disabled={running || !hasData || isViewer}>
               {running ? 'Running 5,000 simulations…' : 'Run Simulation'}
             </Btn>
           </Card>
@@ -369,7 +371,7 @@ export default function BreachPage({ strategies, accounts }) {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr auto', gap: 12, alignItems: 'flex-end' }}>
               <InputField label="Current drawdown on this account" value={condDD} onChange={setCondDD} suffix="%" />
               <InputField label="Remaining estimated trades" value={condTrades} onChange={setCondTrades} />
-              <Btn onClick={runConditional} disabled={condRunning || !hasData || !condDD}>
+              <Btn onClick={runConditional} disabled={condRunning || !hasData || !condDD || isViewer}>
                 {condRunning ? 'Running…' : 'Recalculate'}
               </Btn>
             </div>

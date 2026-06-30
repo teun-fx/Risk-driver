@@ -11,6 +11,8 @@ import PropFirmPage from './pages/PropFirmPage';
 import BreachPage from './pages/BreachPage';
 import { ThemeContext } from './ThemeContext';
 import { DARK } from './theme';
+import { AuthProvider, useAuth } from './AuthContext';
+import LoginScreen from './components/LoginScreen';
 
 // ─── Generate demo trade list ─────────────────────────────────────────────────
 
@@ -158,10 +160,13 @@ const DUMMY_ACCOUNTS = [
   },
 ];
 
-export default function App() {
+function AppInner() {
+  const { role } = useAuth();
   const [activePage, setActivePage] = useState('dashboard');
   const [strategies, setStrategies] = useState([]);
   const [accounts, setAccounts] = useState(DUMMY_ACCOUNTS);
+
+  if (!role) return <LoginScreen />;
 
   function renderPage() {
     switch (activePage) {
@@ -186,5 +191,13 @@ export default function App() {
         </main>
       </div>
     </ThemeContext.Provider>
+  );
+}
+
+export default function App() {
+  return (
+    <AuthProvider>
+      <AppInner />
+    </AuthProvider>
   );
 }

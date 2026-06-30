@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
 import { DARK as t } from '../theme';
+import { useAuth } from '../AuthContext';
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -438,6 +439,7 @@ function MonthlyTab({ costs, payouts }) {
 const TABS = ['Subscriptions & Fees', 'Payouts', 'Monthly Overview'];
 
 export default function Costs() {
+  const { isViewer } = useAuth();
   const [costs, setCosts]     = useState(DUMMY_COSTS);
   const [payouts, setPayouts] = useState(DUMMY_PAYOUTS);
   const [showAddCost, setShowAddCost]     = useState(false);
@@ -458,15 +460,17 @@ export default function Costs() {
           <p style={{ fontSize: 13, color: t.textSec, margin: 0 }}>Track challenge fees, subscriptions, and prop firm payouts</p>
         </div>
         <div style={{ display: 'flex', gap: 10 }}>
-          <button onClick={() => setShowAddCost(true)} style={{
+          <button onClick={() => !isViewer && setShowAddCost(true)} style={{
             padding: '9px 16px', borderRadius: 10, border: `1px solid ${t.border}`,
             background: 'transparent', color: t.text, fontFamily: 'inherit',
-            fontSize: 13, fontWeight: 500, cursor: 'pointer',
+            fontSize: 13, fontWeight: 500, cursor: isViewer ? 'not-allowed' : 'pointer',
+            opacity: isViewer ? 0.5 : 1,
           }}>+ Add Cost</button>
-          <button onClick={() => setShowAddPayout(true)} style={{
+          <button onClick={() => !isViewer && setShowAddPayout(true)} style={{
             padding: '9px 16px', borderRadius: 10, border: 'none',
             background: t.accent, color: '#000', fontFamily: 'inherit',
-            fontSize: 13, fontWeight: 600, cursor: 'pointer',
+            fontSize: 13, fontWeight: 600, cursor: isViewer ? 'not-allowed' : 'pointer',
+            opacity: isViewer ? 0.5 : 1,
           }}>+ Add Payout</button>
         </div>
       </div>
