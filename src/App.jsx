@@ -166,7 +166,7 @@ function AppInner() {
   const [strategies, setStrategies] = useState([]);
   const [accounts, setAccounts] = useState(DUMMY_ACCOUNTS);
 
-  if (!role) return <LoginScreen />;
+  // if (!role) return <LoginScreen />;
 
   function renderPage() {
     switch (activePage) {

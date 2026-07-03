@@ -3,7 +3,7 @@ import { createContext, useContext, useState } from 'react';
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  const [role, setRole] = useState(() => sessionStorage.getItem('fundiq_role') || null);
+  const [role, setRole] = useState(() => sessionStorage.getItem('fundiq_role') || 'admin');
 
   function login(password) {
     if (password === import.meta.env.VITE_ADMIN_PASSWORD) {
