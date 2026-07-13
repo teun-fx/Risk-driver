@@ -4,8 +4,60 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>FundIQ</title>
-    <meta name="description" content="FundIQ — Quantitative risk engine for prop traders" />
+    <title>Risk Driver</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'system-ui', '-apple-system', 'Segoe UI', 'Roboto', 'sans-serif'],
+            },
+            colors: {
+              /* Accent scale — greens only (no purple/blue) */
+              brand: {
+                50: '#f0fdf4',
+                100: '#dcfce7',
+                200: '#bbf7d0',
+                300: '#86efac',
+                400: '#4ade80',
+                500: '#22c55e',
+                600: '#16a34a',
+                700: '#15803d',
+                900: '#14532d',
+              },
+              /* Linear.app neutral scale (light theme) */
+              gray: {
+                50: '#f9f8f9',
+                100: '#f4f2f4',
+                200: '#e9e8ea',
+                300: '#dcdbdd',
+                400: '#86848d',
+                500: '#6f6e77',
+                600: '#3c4149',
+                700: '#282a30',
+                800: '#1c1d21',
+                900: '#101114',
+              },
+              /* Linear.app neutral scale (dark theme, used for dark surfaces like the sidebar) */
+              zinc: {
+                100: '#f7f8f8',
+                200: '#d0d6e0',
+                300: '#8a8f98',
+                400: '#8a8f98',
+                500: '#62666d',
+              },
+            },
+          },
+        },
+      };
+    </script>
   </head>
   <body>
     <div id="root"></div>
